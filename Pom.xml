@@ -27,3 +27,12 @@
 
     </dependencies>
 </project>
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade commons-collections:commons-collections to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade log4j:log4j to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade org.springframework:spring-core to the latest secure version
