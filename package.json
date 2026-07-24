@@ -15,3 +15,18 @@
     "axios": "0.18.0"
   }
 }
+
+/* SecurePilot patch (manual merge needed) */
+    "express": "^4.21.2",
+
+/* SecurePilot patch (manual merge needed) */
+    "jsonwebtoken": "^9.0.2",
+
+/* SecurePilot patch (manual merge needed) */
+    "lodash": "^4.17.21"
+
+/* SecurePilot patch (manual merge needed) */
+    "minimist": "^1.2.8"
+
+/* SecurePilot patch (manual merge needed) */
+    "axios": "^1.7.9"
