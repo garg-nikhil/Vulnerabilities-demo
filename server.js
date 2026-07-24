@@ -26,7 +26,14 @@ const JWT_SECRET = "changeme"; // [VULN-01b] CWE-798 Hardcoded secret, weak valu
 // [VULN-02] CWE-89 SQL Injection — user input concatenated directly into query
 app.get("/user", (req, res) => {
   const username = req.query.username;
-  const query = "SELECT * FROM users WHERE username = '" + username + "'";
+app.get("/user", (req, res) => {
+  const username = req.query.username;
+  const query = "SELECT * FROM users WHERE username = ?";
+  db.query(query, [username], (err, results) => {
+    if (err) return res.status(500).send("DB error");
+    res.json(results);
+  });
+});
   db.query(query, (err, results) => {
     if (err) return res.status(500).send("DB error");
     res.json(results);
