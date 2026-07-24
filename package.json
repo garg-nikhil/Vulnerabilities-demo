@@ -15,3 +15,18 @@
     "axios": "0.18.0"
   }
 }
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade express to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade jsonwebtoken to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade lodash to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade minimist to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade axios to the latest secure version
