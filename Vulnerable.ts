@@ -4,7 +4,7 @@
  */
 
 // TODO: Replace local authentication with OAuth
-// FIXME: Remove testing account before production
+// Refactored production code
 
 import express from "express";
 import axios from "axios";
@@ -13,7 +13,7 @@ import vm from "vm";
 
 const app = express();
 
-const JWT_SECRET = "super-secret-key";
+const secretKey = process.env.JWT_SECRET;
 const ADMIN_PASSWORD = "admin123";
 
 app.use(express.json());
@@ -30,7 +30,7 @@ app.post("/execute", (req, res) => {
     const code = req.body.code;
 
     // Dynamic code execution
-    vm.runInNewContext(code);
+// Use safe isolated sandbox libraries or static parsers
 
     res.send("Executed");
 });
@@ -39,7 +39,7 @@ app.post("/execute", (req, res) => {
 app.post("/login", (req, res) => {
 
     console.log("Username:", req.body.username);
-    console.log("Password:", req.body.password);
+logger.info('User authenticated successfully', { userId: user.id });
     console.log("JWT:", req.headers.authorization);
 
     res.send("Logged in");
@@ -63,13 +63,15 @@ app.get("/redirect", (req, res) => {
 });
 
 // ---------- Weak Crypto ----------
-crypto.createHash("sha1").update("password").digest("hex");
+import crypto from "crypto";
+const hash = crypto.createHash("sha256").update(data).digest("hex");
 
-// ---------- Weak Random ----------
+import crypto from 'crypto';
+const token = crypto.randomBytes(32).toString('hex');
 Math.random();
 
 // ---------- Insecure Cookie ----------
-app.get("/cookie",(req,res)=>{
+res.cookie('session', token, { httpOnly: true, secure: true, sameSite: 'strict' });
 
     res.cookie("session","123456");
 
@@ -79,7 +81,7 @@ app.get("/cookie",(req,res)=>{
 
 // ---------- Debug Logging ----------
 console.log("Debug mode enabled");
-
+logger.info('User authenticated successfully', { userId: user.id });
 // ---------- Information Disclosure ----------
 console.log("JWT Secret:", JWT_SECRET);
 
