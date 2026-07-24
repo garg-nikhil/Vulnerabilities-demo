@@ -42,7 +42,119 @@ RUN wget https://example.com/myapp.tar.gz && \
 COPY id_rsa /root/.ssh/id_rsa
 
 # 9. Copy .env containing secrets
-COPY .env /app/.env
+# ============================
+# Deliberately Insecure Dockerfile
+# For SAST/IaC Scanner Testing Only
+# ============================
+
+# 1. Latest tag used (unpinned image)
+FROM ubuntu:latest
+
+# 2. Maintainer deprecated
+MAINTAINER admin@example.com
+
+# 3. Hardcoded secrets
+ENV DB_PASSWORD=Password123
+ENV AWS_SECRET_ACCESS_KEY=abc123456789secret
+ENV API_KEY=AIzaSyDummyAPIKey
+
+# 4. Install everything without version pinning
+RUN apt-get update && \
+    apt-get install -y \
+        curl \
+        wget \
+        vim \
+        git \
+        python3 \
+        openssh-server \
+        net-tools \
+        telnet \
+        ftp \
+        sudo
+
+# 5. Download and execute remote script
+RUN curl -fsSL https://example.com/install.sh | bash
+
+# 6. Disable SSL verification
+RUN git config --global http.sslVerify false
+
+# 7. Download binary without checksum verification
+RUN wget https://example.com/myapp.tar.gz && \
+    tar -xzf myapp.tar.gz
+
+# 8. Copy SSH private key into image
+COPY id_rsa /root/.ssh/id_rsa
+
+# 9. Copy .env containing secrets
+# 1. Pinned image tag
+FROM ubuntu:22.04
+
+# 2. Use LABEL instead of deprecated MAINTAINER
+LABEL maintainer="admin@example.com"
+
+# 3. Install minimal required packages securely
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3 \
+        python3-pip \
+        ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# 4. Create non-root system user and setup working directory
+RUN groupadd -r appuser && useradd -r -g appuser -d /app -s /sbin/nologin appuser && \
+    mkdir -p /app && \
+    chown -R appuser:appuser /app
+
+WORKDIR /app
+
+# 5. Copy necessary application files with non-root ownership
+COPY --chown=appuser:appuser app.py startup.sh /app/
+
+RUN chmod 755 /app/startup.sh
+
+# 6. Switch to non-root execution context
+USER appuser
+
+# 7. Expose minimal application port and run single process
+EXPOSE 8000
+CMD ["python3", "app.py"]
+
+# 10. World-writable permissions
+RUN chmod -R 777 /app
+
+# 11. Run everything as root
+USER root
+
+# 12. Expose unnecessary ports
+EXPOSE 22
+EXPOSE 3306
+EXPOSE 6379
+
+# 13. Create privileged sudo user
+RUN useradd hacker && \
+    echo "hacker:hacker123" | chpasswd && \
+    usermod -aG sudo hacker
+
+# 14. Enable password login for SSH
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+
+# 15. Insecure file permissions
+RUN touch /etc/secret.conf && \
+    chmod 666 /etc/secret.conf
+
+# 16. Add entire repository (including secrets)
+ADD . /app
+
+WORKDIR /app
+
+# 17. Run custom startup script
+RUN chmod +x startup.sh
+
+# 18. Run multiple services
+CMD service ssh start && \
+    python3 app.py
+
 
 # 10. World-writable permissions
 RUN chmod -R 777 /app
