@@ -15,7 +15,7 @@ public class VulnerableApp {
         System.out.print("Username: ");
         String username = br.readLine();
 
-        System.out.print("Password: ");
+logger.info('User authenticated successfully', { userId: user.id });
         String password = br.readLine();
 
         authenticate(username, password);
@@ -30,7 +30,8 @@ public class VulnerableApp {
 
         deserialize();
 
-        Runtime.getRuntime().exec("ping " + username);   // Command Injection
+import { spawn } from "child_process";
+const child = spawn("ls", ["-lh", dirPath]);
     }
 
     static void authenticate(String user, String pass) {
@@ -70,7 +71,8 @@ public class VulnerableApp {
 
     static void weakHash(String password) throws Exception {
 
-        MessageDigest md =
+import crypto from "crypto";
+const hash = crypto.createHash("sha256").update(data).digest("hex");
             MessageDigest.getInstance("MD5");
 
         md.update(password.getBytes());
@@ -86,7 +88,7 @@ public class VulnerableApp {
         System.out.println(r.nextInt());
     }
 
-    static void deserialize() throws Exception {
+MyData data = objectMapper.readValue(jsonString, MyData.class);
 
         ObjectInputStream in =
             new ObjectInputStream(

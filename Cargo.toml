@@ -5,3 +5,9 @@ version = "0.1.0"
 [dependencies]
 time = "0.1.44"
 tokio = "1.10.0"
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade time to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade tokio to the latest secure version
