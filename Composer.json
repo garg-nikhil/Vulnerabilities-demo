@@ -5,3 +5,9 @@
         "monolog/monolog": "1.17.0"
     }
 }
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade symfony/http-foundation to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade twig/twig to the latest secure version
