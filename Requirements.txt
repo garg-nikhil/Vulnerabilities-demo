@@ -5,3 +5,24 @@ Pillow==6.2.0
 PyYAML==5.1
 urllib3==1.24.1
 Jinja2==2.10
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade Django to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade Flask to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade requests to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade Pillow to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade PyYAML to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade urllib3 to the latest secure version
+
+/* SecurePilot patch (manual merge needed) */
+// Upgrade Jinja2 to the latest secure version

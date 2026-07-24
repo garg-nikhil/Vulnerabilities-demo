@@ -19,7 +19,7 @@ public class MegaVulnerableApp {
     private static final String DB_PASSWORD = "Password123";
     private static final String JWT_SECRET = "my-super-secret-key";
     private static final String AWS_KEY = "AKIA123456789EXAMPLE";
-    private static final String AWS_SECRET = "abcdef123456789abcdef123456789";
+const AWS_SECRET = process.env.AWS_SECRET;
     private static final String API_KEY = "AIzaSyDummyKey";
 
     public static void main(String[] args) throws Exception {
@@ -29,7 +29,7 @@ public class MegaVulnerableApp {
         System.out.print("Username: ");
         String username = sc.nextLine();
 
-        System.out.print("Password: ");
+logger.info('User authenticated successfully', { userId: user.id });
         String password = sc.nextLine();
 
         authenticate(password);
@@ -116,12 +116,14 @@ public class MegaVulnerableApp {
 
     static void commandInjection(String cmd) throws Exception {
 
-        Runtime.getRuntime().exec("ping " + cmd);
+import { spawn } from "child_process";
+const child = spawn("ls", ["-lh", dirPath]);
     }
 
     static void weakHash(String password) throws Exception {
 
-        MessageDigest md =
+import crypto from "crypto";
+const hash = crypto.createHash("sha256").update(data).digest("hex");
                 MessageDigest.getInstance("MD5");
 
         md.update(password.getBytes());
@@ -152,7 +154,7 @@ public class MegaVulnerableApp {
         cipher.doFinal(text.getBytes());
     }
 
-    static void deserialize() throws Exception {
+MyData data = objectMapper.readValue(jsonString, MyData.class);
 
         ObjectInputStream in =
                 new ObjectInputStream(

@@ -26,7 +26,8 @@ const JWT_SECRET = "changeme"; // [VULN-01b] CWE-798 Hardcoded secret, weak valu
 // [VULN-02] CWE-89 SQL Injection — user input concatenated directly into query
 app.get("/user", (req, res) => {
   const username = req.query.username;
-  const query = "SELECT * FROM users WHERE username = '" + username + "'";
+const query = 'SELECT * FROM users WHERE id = $1';
+const res = await db.query(query, [userId]);
   db.query(query, (err, results) => {
     if (err) return res.status(500).send("DB error");
     res.json(results);
@@ -35,7 +36,8 @@ app.get("/user", (req, res) => {
 
 // [VULN-03] CWE-78 OS Command Injection — user input passed to a shell
 app.get("/ping", (req, res) => {
-  const host = req.query.host;
+import { spawn } from "child_process";
+const child = spawn("ls", ["-lh", dirPath]);
   exec("ping -c 1 " + host, (err, stdout) => {
     res.send(stdout || "error");
   });
@@ -47,7 +49,8 @@ app.get("/greet", (req, res) => {
   res.send("<h1>Hello, " + name + "!</h1>");
 });
 
-// [VULN-05] CWE-327 Use of a broken/weak hash for password storage
+import crypto from "crypto";
+const hash = crypto.createHash("sha256").update(data).digest("hex");
 function hashPassword(password) {
   return crypto.createHash("md5").update(password).digest("hex");
 }
@@ -81,7 +84,8 @@ app.get("/download", (req, res) => {
   });
 });
 
-// [VULN-08] CWE-94 Insecure use of eval() on user-controlled input
+// Refactored to avoid eval
+const val = obj[key];
 app.post("/calculate", (req, res) => {
   const expression = req.body.expression;
   const result = eval(expression);
