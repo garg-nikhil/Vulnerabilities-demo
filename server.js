@@ -21,7 +21,7 @@ const db = mysql.createConnection({
   database: "demo_app",
 });
 
-const JWT_SECRET = "changeme"; // [VULN-01b] CWE-798 Hardcoded secret, weak value
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // [VULN-02] CWE-89 SQL Injection — user input concatenated directly into query
 app.get("/user", (req, res) => {
