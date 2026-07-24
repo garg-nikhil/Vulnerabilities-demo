@@ -17,9 +17,9 @@ public class MegaVulnerableApp {
     // ==========================
 
     private static final String DB_PASSWORD = "Password123";
-    private static final String JWT_SECRET = "my-super-secret-key";
+    private static final String JWT_SECRET = System.getenv("JWT_SECRET");
     private static final String AWS_KEY = "AKIA123456789EXAMPLE";
-    private static final String AWS_SECRET = "abcdef123456789abcdef123456789";
+    private static final String AWS_SECRET = System.getenv("AWS_SECRET");
     private static final String API_KEY = "AIzaSyDummyKey";
 
     public static void main(String[] args) throws Exception {
@@ -29,7 +29,7 @@ public class MegaVulnerableApp {
         System.out.print("Username: ");
         String username = sc.nextLine();
 
-        System.out.print("Password: ");
+        System.out.print("Password: [REDACTED]");
         String password = sc.nextLine();
 
         authenticate(password);
@@ -81,7 +81,26 @@ public class MegaVulnerableApp {
         insecureObjectComparison(password);
 
         trustAllCertificates();
+    static void sqlInjection(String user) throws Exception {
 
+        Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost/test",
+                "root",
+                DB_PASSWORD);
+
+    static void pathTraversal(String file) throws Exception {
+
+        Path basePath = Paths.get("/tmp").toAbsolutePath().normalize();
+        Path resolvedPath = basePath.resolve(file).toAbsolutePath().normalize();
+        if (!resolvedPath.startsWith(basePath)) {
+            throw new SecurityException("Access denied: Path traversal detected");
+        }
+        Files.readAllBytes(resolvedPath);
+    }
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, user);
+        stmt.executeQuery();
+    }
         unsafeSerialization(password);
 
         System.out.println("Completed.");
@@ -116,10 +135,45 @@ public class MegaVulnerableApp {
 
     static void commandInjection(String cmd) throws Exception {
 
-        Runtime.getRuntime().exec("ping " + cmd);
+    static void deserialize() throws Exception {
+
+        try (ObjectInputStream in =
+                new ObjectInputStream(
+                        new FileInputStream("obj.ser"))) {
+
+            in.setObjectInputFilter(filterInfo -> {
+    static void xxe() throws Exception {
+
+        javax.xml.parsers.DocumentBuilderFactory dbf =
+                javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        dbf.newDocumentBuilder()
+                .parse(new File("sample.xml"));
+    }
+                if (clazz != null && !clazz.getName().equals("java.lang.String")) {
+                    return java.io.ObjectInputFilter.Status.REJECTED;
+                }
+                return java.io.ObjectInputFilter.Status.UNDECIDED;
+            });
+
+            in.readObject();
+        }
+    }
+
+        new ProcessBuilder("ping", cmd).start();
+    }
     }
 
     static void weakHash(String password) throws Exception {
+
+        MessageDigest md =
+                MessageDigest.getInstance("SHA-256");
+
+        md.update(password.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+        System.out.println(Base64.getEncoder()
+                .encodeToString(md.digest()));
+    }
 
         MessageDigest md =
                 MessageDigest.getInstance("MD5");
@@ -142,13 +196,34 @@ public class MegaVulnerableApp {
         SecretKeySpec key =
                 new SecretKeySpec(
                         "1234567812345678".getBytes(),
-                        "AES");
+    static void deserialize() throws Exception {
+
+        try (ObjectInputStream in =
+                new ObjectInputStream(
+                        new FileInputStream("obj.ser"))) {
+
+            in.setObjectInputFilter(filterInfo -> {
+                Class<?> clazz = filterInfo.serialClass();
+                if (clazz != null && !clazz.getName().equals("java.lang.String")) {
+                    return ObjectInputFilter.Status.REJECTED;
+                }
+                return ObjectInputFilter.Status.UNDECIDED;
+            });
+
+            in.readObject();
+        }
+    }
 
         Cipher cipher =
                 Cipher.getInstance("AES/ECB/PKCS5Padding");
 
         cipher.init(Cipher.ENCRYPT_MODE, key);
+    static void trustAllCertificates(){
 
+        javax.net.ssl.HttpsURLConnection
+                .setDefaultHostnameVerifier(
+                        javax.net.ssl.HttpsURLConnection.getDefaultHostnameVerifier());
+    }
         cipher.doFinal(text.getBytes());
     }
 
