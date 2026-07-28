@@ -30,7 +30,7 @@ app.post("/execute", (req, res) => {
     const code = req.body.code;
 
     // Dynamic code execution
-    vm.runInNewContext(code);
+// Use safe isolated sandbox libraries or static parsers
 
     res.send("Executed");
 });
