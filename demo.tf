@@ -4,7 +4,8 @@ provider "aws" {
  
 resource "aws_s3_bucket" "data_backup" {
   bucket = "enterprise-production-data-backups"
-  acl    = "public-read"
+acl = "private"
+resource "aws_s3_bucket_public_access_block" "block" { block_public_acls = true }
 }
  
 resource "aws_security_group" "allow_ssh_all" {
