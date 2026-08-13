@@ -3,5 +3,5 @@ name = "demo"
 version = "0.1.0"
 
 [dependencies]
-time = "0.1.44"
+time = "0.3"
 tokio = "1.10.0"
